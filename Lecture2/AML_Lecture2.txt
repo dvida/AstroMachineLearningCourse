@@ -1,0 +1,2 @@
+Same as Lecture 6 in the original Python course:
+https://github.com/dvida/UWO-PA-Python-Course/tree/master/Lecture%206
