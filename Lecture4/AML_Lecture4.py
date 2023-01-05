@@ -1,6 +1,5 @@
 # Uncupervised machine learning
-# Covered topics:
-# - Pattern finding, clustering algorithms, nearest neighbors, DBSCAN
+# Covered topics: Pattern finding, GMMs, clustering algorithms, DBSCAN, PCA
 
 # Good introduction
 # https://builtin.com/data-science/unsupervised-learning-python
@@ -277,7 +276,7 @@ plt.show()
 # good using just one of these features.
 
 
-# The first incredibly important step is to standradize the data. This means that we will subtract the mean
+# The first incredibly important step is to standardize the data. This means that we will subtract the mean
 # and divide by the standard deviation. This is important because the PCA algorithm will find the directions
 # of maximum variance in the data. If we don't standardize the data, the PCA will find the directions of
 # maximum variance in the data, but the variance will be in the units of the data. So, if one feature has
@@ -313,7 +312,9 @@ plt.ylabel('PCA 2')
 plt.show()
 
 # And now we can see that the groups can be nicely separated. Almost just one PCA component is enough to
-# separate the classes, although these is still a bit of an overlap between the two groups.
+# separate the classes, although these is still a bit of an overlap between the two groups. We could simply
+# increase the number of components, but the goal here is to reduce dimensionality, so we'll stick with
+# just two.
 
 # The issue here is that there might be some non-linear structure in the data that we're not capturing
 # with the PCA. We can try to use a non-linear dimensionality reduction algorithm to see if we can capture
