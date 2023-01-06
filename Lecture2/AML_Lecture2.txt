@@ -1,2 +1,5 @@
 Same as Lecture 6 in the original Python course:
 https://github.com/dvida/UWO-PA-Python-Course/tree/master/Lecture%206
+
+For more discussion about overfitting and underfitting, read the following section from Ivezic et al. 2019:
+8.11. Overfitting, Underfitting, and Cross-Validation

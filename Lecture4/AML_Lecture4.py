@@ -302,7 +302,29 @@ pca = PCA(n_components=2)
 # Fit the PCA object to the data
 pca.fit(iris.data)
 
-# Transform the data
+# And now probably what's on everyone's mind - which features are the most important?
+# Let's look at the explained variance ratio, i.e. which PCA components explain the most variance in the data
+print("Explained variance ratio: ")
+print(pca.explained_variance_ratio_)
+
+# And let's look at the components themselves, each row is a PCA component and each column is a feature
+print("PCA components: ")
+print(pca.components_)
+
+# We can see that the first PCA components explains 73% of the variance - huge! The second PCA component
+# explains about 23% of the variance, so we basically captured over 95% of the variance in just 2 components!
+# This is a huge reduction in dimensionality, and it's telling us that we don't need to add more components.
+# >=95% is something you should aim for and it should guide your choice of the number of components.
+
+# And we can see that this first PCA component is highly correlated with features 0, 2, and 3 (sepal length,
+# petal length, and petal width). This is exactly what we saw in the correlation matrix. The second PCA 
+# component is highly correlated with feature 1 (sepal width), which is not correlated with any of the other
+# features. This is also what we saw in the correlation matrix.
+
+
+
+
+# Transform the data into PCA components
 iris_pca = pca.transform(iris.data)
 
 # Plot the transformed data
@@ -324,8 +346,10 @@ plt.show()
 # https://www.displayr.com/using-t-sne-to-visualize-data-before-prediction/
 from sklearn.manifold import TSNE
 
-# Create a t-SNE object
-tsne = TSNE(n_components=2)
+# Create a t-SNE object. It has an extra parameter called perplexity, which is a measure of how many
+# neighbors each point has. The default value is 30, but let's set it to 40. This might require some manual 
+# tuning until we see good results.
+tsne = TSNE(n_components=2, perplexity=40, n_iter=4000)
 
 # Fit the t-SNE object to the data
 iris_tsne = tsne.fit_transform(iris.data)
