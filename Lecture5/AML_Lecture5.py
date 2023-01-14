@@ -9,6 +9,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Amazing tutorial on this topic:
+# https://scipy-lectures.org/packages/scikit-learn/index.html
+
 
 # In previous lecture, we talked about unsuperised learning and principal component analysis. We have shown
 # how to use PCA to reduce the dimensionality of the data and find the most important features.
@@ -24,6 +27,8 @@ import matplotlib.pyplot as plt
 # regression is to use a model to generate synthetic observations and fit a regression model to the 
 # simulated data and known inputs. Then you can use actual observations to invert the model parameters.
 
+
+### CLASSIFICATION ###
 
 # Let's start with a simple example. We have a set of data points and we want to separate them into two
 # categories. We can do this by drawing a line between the two categories. The line is called a decision
@@ -91,7 +96,9 @@ plt.ylabel('g - r')
 plt.xlim(0.7, 1.4)
 plt.ylim(-0.2, 0.4)
 
-plt.show()
+#plt.show()
+plt.clf()
+plt.close()
 
 
 # Let's create a combined dataset which has all 5 colors and the RR Lyrae stars marked as 1 and all other
@@ -131,7 +138,7 @@ test_labels = test_colors['class']
 # If it's too large, the boundary will be too smooth and the algorithm will underfit the data.
 # The default value is 1.0, which is usually a good starting point.
 svc = svm.SVC(kernel='linear')
-svc.fit(train_data, train_labels)
+clf = svc.fit(train_data, train_labels)
 
 # Predict the classes of the test data
 predicted_labels = svc.predict(test_data)
@@ -142,10 +149,17 @@ print(classification_report(test_labels, predicted_labels))
 # Show the confusion matrix
 # See more info: https://www.jcchouinard.com/confusion-matrix-in-scikit-learn/
 plot_confusion_matrix(svc, test_data, test_labels)
-plt.show()
+#plt.show()
+plt.clf()
+plt.close()
 
 # We got an accuracy of >95%, which is pretty good! But we can do better. Let's try a different kernel.
 # 95% is considered to be very accurate for most applications.
+
+# Lecture note: Show the decision boundary in Ivezic et al. (Figure 9.10.)
+
+#########################
+
 
 
 # So you might have already figured out where the problem with this type of SVMs is - the boundaries are
@@ -170,3 +184,167 @@ print("RBF kernel:")
 print(classification_report(test_labels, svc.predict(test_data)))
 
 # If you're using data with very high dimensionality, you should consider applying PCA and then using an SVM.
+
+
+
+######################
+
+### REGRESSION ###
+
+# Now that we've mastered classification, let's talk about regression.
+# Regression is the task of predicting a continuous variable based on a set of features (i.e. other 
+# continuous or discrete variables). For example, given a type, location, and size of a tree, we can
+# predict its age (so we don't have to chop it down and count the rings). Or given a type, location, and
+# size of a house, we can predict its price (so we don't have to go through the hassle of negotiating
+# with the seller). As you can imagine, regression is also very often used in finance - people want to
+# predict stock prices and get rich.
+
+# Let's start with a simple example. We'll use the California housing dataset from the UCI Machine Learning
+# Repository. It contains information about houses in California, including their location, size, and price.
+# We'll use this data to predict the price of a house based on its location and size.
+# This dataset is already included in scikit-learn, so we don't have to download it manually.
+
+# Import the dataset
+from sklearn.datasets import fetch_california_housing
+california = fetch_california_housing()
+
+print(california)
+
+# Let's make a plot of all features against one another
+# This is called a pairplot
+# See more info: https://seaborn.pydata.org/generated/seaborn.pairplot.html
+import seaborn as sns
+
+# Let's only select a subset of four features for plotting purposes only
+# Let's select: the median household income in the area MedInc, the median house age HouseAge, 
+# the average number of rooms per house AveRooms, and the price MedHouseVal
+
+# Create a pandas DataFrame
+california_df = pd.DataFrame(california.data, columns=california.feature_names)
+california_df['MedHouseVal'] = california.target
+
+# # Create a pairplot with only select features
+#sns.pairplot(california_df[['MedInc', 'HouseAge', 'AveRooms', 'MedHouseVal']])
+#plt.show()
+
+# We can see that there is a strong correlation between the price and the median household income in the area.
+# There is also a weak correlation between the price and the average number of rooms per house.
+# Let's try to fit a linear regression model to this data.
+
+# Import relevant functions
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+
+# Split the data into training and testing sets
+# We'll use 80% of the data for training and 20% for testing
+train_data, test_data, train_labels, test_labels = train_test_split(california.data, california.target, test_size=0.2)
+
+# Fit a linear regression model to the data
+# This will fit a hyperplane to the data that minimizes the mean squared error between the predicted
+# and actual labels
+reg = LinearRegression()
+reg.fit(train_data, train_labels)
+
+# Predict the labels of the test data
+predicted_labels = reg.predict(test_data)
+
+# Show the mean squared error
+print("Linear regression")
+print("Mean squared error: ", mean_squared_error(test_labels, predicted_labels))
+
+# Show the average percentage error
+print("Average percentage error: ", np.mean(np.abs((test_labels - predicted_labels)/test_labels))*100)
+
+# We got a mean squared error of 0.55 - that's about half a million dollars! That's not very good, the error
+# is 32% of the average price of a house in California. Let's try a different model.
+
+# Let's try a gradient boosting regressor
+# See more info: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html
+# Gradient boosting is a type of ensemble learning, which is a technique that combines multiple models to
+# improve the overall performance.
+from sklearn.ensemble import GradientBoostingRegressor
+
+# Fit a gradient boosting regressor to the data
+gbr = GradientBoostingRegressor()
+gbr.fit(train_data, train_labels)
+
+# Predict the labels of the test data
+predicted_labels = gbr.predict(test_data)
+
+# Show the mean squared error
+print("Gradient boosting")
+print("Mean squared error: ", mean_squared_error(test_labels, predicted_labels))
+
+# Show the average percentage error
+print("Average percentage error: ", np.mean(np.abs((test_labels - predicted_labels)/test_labels))*100)
+
+# We got an average error of 21%, which is much better than the linear regression model.
+
+# Let's try a random forest regressor
+# See more info: https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
+# Random forests are another type of ensemble learning, which is a technique that combines multiple models to
+# improve the overall performance. Random forests are a type of decision tree, which is a model that splits
+# the data into smaller and smaller subsets based on a set of rules. The rules are chosen based on the
+# information gain, which is the difference in entropy before and after the split.
+from sklearn.ensemble import RandomForestRegressor
+
+# Fit a random forest regressor to the data
+rfr = RandomForestRegressor()
+rfr.fit(train_data, train_labels)
+
+# Predict the labels of the test data
+predicted_labels = rfr.predict(test_data)
+
+# Show the mean squared error
+print("Random forest")
+print("Mean squared error: ", mean_squared_error(test_labels, predicted_labels))
+
+# Show the average percentage error
+print("Average percentage error: ", np.mean(np.abs((test_labels - predicted_labels)/test_labels))*100)
+
+# Finally, we got an average error of 18%, which is the best so far!
+
+# Now that we've found the best mode, let's try to tune it's parameters to improve the performance even more.
+# We'll use a grid search to find the best parameters.
+# See more info: https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
+from sklearn.model_selection import GridSearchCV
+
+# So how do we choose the parameters to try?
+# We should always consult the literature, e.g. see this post:
+# https://towardsdatascience.com/random-forest-hyperparameters-and-how-to-fine-tune-them-17aee785ee0d
+
+# According to this post, the max_features parameter is the most important parameter to tune. Everything
+# else doesn't really apply for regression problems or the default values are already good enough.
+# The max_features parameter controls the number of features that are considered when looking for the best
+# split. Float numbers are interpreted as a fraction of the total number of features. None means that all
+# features are considered.
+
+# Create a dictionary of parameters to try
+parameters = {'max_features': [None, 0.2, 0.33, 0.5]}
+
+# Create a grid search object (n_jobs=-1 means that the grid search will use all available cores)
+# How to choose a scoring parameter: https://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter
+# We want to minimize the mean squared error, so we'll use the negative mean squared error
+grid_search = GridSearchCV(rfr, parameters, scoring='neg_mean_squared_error', verbose=1, n_jobs=-1)
+# Fit the grid search to the data
+grid_search.fit(train_data, train_labels)
+
+# Show the best parameters
+print("Random forest with grid search")
+print("Best parameters: ", grid_search.best_params_)
+# Show the mean squared error
+print("Mean squared error: ", mean_squared_error(test_labels, grid_search.predict(test_data)))
+# Show the average percentage error
+print("Average percentage error: ", np.mean(np.abs((test_labels - grid_search.predict(test_data))/test_labels))*100)
+
+# We were able to achieve a slighly better mean squared error, alhough the average percentage error is a bit
+# higher. This depends on which target we want to optimize for.
+# We can now start to think about starting a real estate business and making a lot of money!
+
+
+# TASK: Try to improve the performance of the model by trying different regression models and tuning their
+# parameters. You can also try to use different features, e.g. by removing some of the features or by
+# creating new features (e.g. distance from the nearest city centre instead of just lat/lon). 
+# You can also try to use a different scoring parameter for the grid search.
+# Also, try using a PCA to reduce the dimensionality of the data and see if that improves the performance.
