@@ -128,7 +128,7 @@ plt.close()
 # This distribution describes things such as the sizes of craters on the Moon, the sizes of galaxies, etc.
 
 # Let's generate some data describing the sizes of craters on the Moon
-# We'll generate crater sizes between 0.2 and 100 km
+# We'll generate crater sizes between 5 and 100 km
 min_crater_size = 5
 max_crater_size = 100
 crater_size_index = 0.3
@@ -268,8 +268,8 @@ all_meteors_night = known_shower_night + unknown_shower_night
 
 # To check if there is a new meteor shower present in the data, let's check if the number of all observed
 # meteors matches just the background rate.
-ks_gauss = scipy.stats.kstest(all_meteors_night, known_shower_dist.cdf)
-print(ks_gauss)
+ks = scipy.stats.kstest(all_meteors_night, known_shower_dist.cdf)
+print(ks)
 
 # The p-value is less than 0.05, so we reject the null hypothesis that the data is drawn from a given
 # distribution. We can thus conclude that there is an unknown shower present in the data.
@@ -282,7 +282,10 @@ print(ks_gauss)
 
 
 
-### TASK 1 ###
+
+### EXTRAS that don't fit in a 2 hour lecture
+
+### HOMEWORK ###
 
 # Fit a power-law size distribution to Lunar crater size data in Mare Tranquillitatis.
 # The data is in the LU78287GT.xlsx, from a paper by Salamuniccar et al. (2013).
@@ -327,6 +330,9 @@ plt.show()
 
 
 ### ###
+
+
+
 
 # Kernel density estimation
 

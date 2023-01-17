@@ -69,7 +69,7 @@ plt.scatter(new_samples[0][:, 0], new_samples[0][:, 1], label='New samples', alp
 # Plot the fit
 plt.scatter(gmm.means_[:, 0], gmm.means_[:, 1], label='GMM means', marker='x', color='r', s=100)
 
-# Plot GMM contours
+# Plot GMM contours (copy/paste to save time)
 x = np.linspace(0, 15, 100)
 y = np.linspace(0, 15, 100)
 X, Y = np.meshgrid(x, y)
@@ -337,6 +337,12 @@ plt.show()
 # separate the classes, although these is still a bit of an overlap between the two groups. We could simply
 # increase the number of components, but the goal here is to reduce dimensionality, so we'll stick with
 # just two.
+
+
+
+
+### EXTRAS
+
 
 # The issue here is that there might be some non-linear structure in the data that we're not capturing
 # with the PCA. We can try to use a non-linear dimensionality reduction algorithm to see if we can capture
