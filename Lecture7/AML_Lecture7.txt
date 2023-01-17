@@ -1,0 +1,17 @@
+
+# In this lecture, we will use the whole 2 hours to wrong on a project in groups.
+
+Main task:
+ASTEROID ALBEDO PREDICTION (regression)
+Based on the orbital elements of asteroids, their H magnitude and color differences (B-V and U-B), predict
+their albedo: https://www.kaggle.com/datasets/basu369victor/prediction-of-asteroid-diameter
+This would be useful becuase orbital elements and color differences can be easily measured telescopically, 
+but for the albedo we need infrared observations. Perhaps color differences hold a key?
+
+
+
+Alternative task:
+SDSS OBJECT CLASSIFICATION (classification)
+Use the SDSS data and make a classifier which classifies them into Stars, Galaxy, and Quasars using
+select parameters (see: https://www.kaggle.com/code/muhakabartay/ml-models-for-sloan-digital-sky-survey-dr16)
+
