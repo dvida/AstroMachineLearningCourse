@@ -1,4 +1,4 @@
-# Uncupervised machine learning
+# Unsupervised machine learning
 # Covered topics: Pattern finding, GMMs, clustering algorithms, DBSCAN, PCA
 
 # Good introduction

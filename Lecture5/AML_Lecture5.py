@@ -13,16 +13,16 @@ import matplotlib.pyplot as plt
 # https://scipy-lectures.org/packages/scikit-learn/index.html
 
 
-# In previous lecture, we talked about unsuperised learning and principal component analysis. We have shown
-# how to use PCA to reduce the dimensionality of the data and find the most important features.
+# In the previous lecture, we talked about unsuperised learning and principal component analysis. We have 
+# shown how to use PCA to reduce the dimensionality of the data and find the most important features.
 # We ended with saying that we can see how PCA can be useful to divide the data into nicely separable
 # categories.
 
-# In this lecture we will talk about supervised learning, classification in particular where we want the
+# In this lecture we will talk about supervised learning and classification in particular where we want the
 # algorithm to automatically figure out how to separate the data into different categories.
 
 # There is also another type of supervised learning called regression. Instead of classifying the data into
-# different categories, we want to predict a continuous value. For example, we can use regression to predict
+# categories, in regression we predict a continuous variable. For example, we can use regression to predict
 # the price of a house based on its size and location. In astronomy, a common way to use machine learning 
 # regression is to use a model to generate synthetic observations and fit a regression model to the 
 # simulated data and known inputs. Then you can use actual observations to invert the model parameters.
@@ -31,16 +31,16 @@ import matplotlib.pyplot as plt
 ### CLASSIFICATION ###
 
 # Let's start with a simple example. We have a set of data points and we want to separate them into two
-# categories. We can do this by drawing a line between the two categories. The line is called a decision
-# boundary. The decision boundary is the line that separates the two categories. The algorithm that we use
-# to find the decision boundary is called a classifier. The classifier is a supervised learning algorithm
-# because we are providing the algorithm with the correct answer. We are telling the algorithm which data
-# points belong to which category. The algorithm then tries to find the decision boundary that separates
-# the data into the two categories.
+# categories. We can do this by drawing a line between them in the parameter space. The line is called a 
+# decision boundary. The decision boundary is the line that separates the two categories. The algorithm that 
+# we use to find the decision boundary is called a classifier. The classifier is a supervised learning 
+# algorithm because we are providing the algorithm with the correct answer. We are telling the algorithm 
+# which data points belong to which category. The algorithm then tries to find the decision boundary that 
+# separates the data into the two categories.
 
 # The first algorithm we'll consider is called Support Vector Machines.
 # This method finds the optimal set of hyperplanes that separate the data into different categories.
-# This of it as a PCA but instead of us trying to figure out how to best divide the data, the algorithm
+# Think of it as PCA but instead of us trying to figure out how to best divide the data, the algorithm
 # does it itself.
 
 # Just to clarify, the idea here is to train the algorithm on manually classified data and then use it to
@@ -103,8 +103,20 @@ plt.close()
 
 # Let's create a combined dataset which has all 5 colors and the RR Lyrae stars marked as 1 and all other
 # are marked as 0
-rr_colors = pd.DataFrame({'u': rr_data['umag'], 'g': rr_data['gmag'], 'r': rr_data['rmag'], 'i': rr_data['imag'], 'z': rr_data['zmag'], 'class': np.ones(len(rr_data))})
-sdss_colors = pd.DataFrame({'u': sdss_data['u'], 'g': sdss_data['g'], 'r': sdss_data['r'], 'i': sdss_data['i'], 'z': sdss_data['z'], 'class': np.zeros(len(sdss_data))})
+rr_colors = pd.DataFrame(
+	{'u': rr_data['umag'], 
+	 'g': rr_data['gmag'], 
+	 'r': rr_data['rmag'], 
+	 'i': rr_data['imag'], 
+	 'z': rr_data['zmag'], 
+	 'class': np.ones(len(rr_data))})
+sdss_colors = pd.DataFrame(
+	{'u': sdss_data['u'], 
+	 'g': sdss_data['g'], 
+	 'r': sdss_data['r'], 
+	 'i': sdss_data['i'], 
+	 'z': sdss_data['z'], 
+	 'class': np.zeros(len(sdss_data))})
 
 # Combine the two datasets
 all_colors = pd.concat([rr_colors, sdss_colors])
@@ -155,6 +167,26 @@ plt.close()
 
 # We got an accuracy of >95%, which is pretty good! But we can do better. Let's try a different kernel.
 # 95% is considered to be very accurate for most applications.
+
+# The two other important values we should look at are the precision and recall.
+# Precision: What fraction of the positive predictions were correct? This is a measure of the quality of the
+# positive predictions. If the precision is low, it means that the classifier is predicting a lot of false
+# positives.
+# Recall: What fraction of the positive cases did we catch? This is a measure of the completeness of the 
+# positive predictions. If the recall is low, it means that the classifier is missing a lot of true positives.
+
+# We want both to be high, but we usually care more about precision than recall. However, this depends on
+# the application. E.g. if we are trying to detect cancer, we want to have a high recall, because we don't
+# want to miss any cases. 
+
+# The other two reported values are the F1 score and the support. The F1 score is the harmonic mean of the
+# precision and recall. It's a good measure to use if you want to compare two classifiers. The support is
+# the number of samples of the true response that lie in that class. This is useful to know if there are
+# class imbalances - the two classes should be generally balanced (i.e. have the same number of samples)
+# for the classifier to work well.
+# Every time you use a classifier and report the results, you should always report these numbers and 
+# include an interpretation in your paper.
+
 
 # Lecture note: Show the decision boundary in Ivezic et al. (Figure 9.10.)
 
