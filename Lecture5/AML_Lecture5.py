@@ -1,9 +1,6 @@
 # Covered topics:
 # - Supervised learning
 
-# Tensorflow Playground:
-# http://playground.tensorflow.org
-
 
 # Import libraries
 import numpy as np
@@ -127,7 +124,7 @@ all_colors = all_colors.sample(frac=1)
 # Import relevant functions
 from sklearn import svm
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import plot_confusion_matrix, classification_report
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
 
 # Do a test-train split (80% training, 20% testing)
 # This is important as we want to make sure that the algorithm generalizes well to new data
@@ -160,7 +157,11 @@ print(classification_report(test_labels, predicted_labels))
 
 # Show the confusion matrix
 # See more info: https://www.jcchouinard.com/confusion-matrix-in-scikit-learn/
-plot_confusion_matrix(svc, test_data, test_labels)
+# Plot the confusion matrix
+cm = confusion_matrix(test_labels, predicted_labels, labels=svc.classes_)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm,
+                              display_labels=svc.classes_)
+disp.plot()
 #plt.show()
 plt.clf()
 plt.close()
