@@ -322,9 +322,17 @@ plt.show()
 
 
 
-# TASK - Try reducing/increasing the number of neurons in the hidden layer and see how the accuracy changes.
+# TASK 1 - Try reducing/increasing the number of neurons in the hidden layer and see how the accuracy changes.
 # Find the point where the accuracy starts to decrease. Also, try to tweak the learning rate and other 
 # parameters to see if you can improve the accuracy.
+
+# TASK 2 - Apply neural networks to the California housing dataset. Try to predict the median house value
+# from the other features. You can use the same code as above, but you will need to change the data loading
+# and preprocessing steps. You will also have to use the MLPRegressor class instead of the MLPClassifier,
+# as this is a regression problem. You can find the documentation here:
+# https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html
+
+
 
 # Unfortunately, there are limits to what we can do with sci-kit learn and its simple implementation of
 # neural networks. In most applications, getting the first 90% of the accuracy is easy. The last 10% is
